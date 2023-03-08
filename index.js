@@ -83,6 +83,48 @@ app.patch("/user/update/:id", (req, res) => {
     });
 });
 
+// update multiple users
+app.patch("/user/bulk-update", (req, res) => {
+    const ids = req.body.ids;
+
+    // Validate the request body
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        res.status(400).send("Invalid request body");
+        return;
+    }
+
+    // Loop through the array of IDs and update the corresponding users
+    ids.forEach((id) => {
+        // Find the index of the user with the specified ID
+        const index = users.findIndex((user) => user.Id === id);
+
+        if (index !== -1) {
+            // Update the user's information based on the request body
+            if (req.body.gender) {
+                users[index].gender = req.body.gender;
+            }
+            if (req.body.name) {
+                users[index].name = req.body.name;
+            }
+            if (req.body.contact) {
+                users[index].contact = req.body.contact;
+            }
+            if (req.body.address) {
+                users[index].address = req.body.address;
+            }
+            if (req.body.photoUrl) {
+                users[index].photoUrl = req.body.photoUrl;
+            }
+        }
+    });
+
+    // Save the updated array back to the file
+    fs.writeFileSync("./users.json", JSON.stringify(users));
+
+    // Send a success response
+    res.send("Users updated successfully");
+});
+
 // delete A user API
 app.delete("/user/delete/:id", (req, res) => {
     const id = req.params.id;

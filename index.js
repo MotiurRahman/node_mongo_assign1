@@ -12,17 +12,20 @@ app.get("/", (req, res) => {
     res.send("Hello World!");
 });
 
+// A random user API
 app.get("/user/random", (req, res) => {
     const randomUser = users[Math.floor(Math.random() * users.length)];
     res.send(randomUser);
 });
 
+//A list of random users API
 app.get("/user/all", (req, res) => {
     const limit = req.query.limit || users.length; // Get the limit from the query string or use the default value
     const limitedUsers = users.slice(0, limit);
     res.send(limitedUsers);
 });
 
+//Save a random user API
 app.post("/user/save", (req, res) => {
     const requiredFields = [
         "id",
@@ -56,6 +59,7 @@ app.post("/user/save", (req, res) => {
     });
 });
 
+// Update a random user API
 app.patch("/user/update/:id", (req, res) => {
     const id = req.params.id;
     const updatedUser = req.body;
@@ -79,6 +83,7 @@ app.patch("/user/update/:id", (req, res) => {
     });
 });
 
+// delete A user API
 app.delete("/user/delete/:id", (req, res) => {
     const id = req.params.id;
 
